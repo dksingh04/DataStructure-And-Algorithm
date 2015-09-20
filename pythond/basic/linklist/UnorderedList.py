@@ -93,6 +93,103 @@ class UnorderdList:
 
 		return dataStr
 
+class OrderedList:
+	"""docstring for OrderedList"""
+	def __init__(self):
+		self.head = None
+
+	def isEmpty(self):
+		return self.head == None
+
+	def add(self, data):
+		current = self.head
+		previous = None
+		stop = False
+
+		while current!= None and not stop:
+			if current.getData() > data:
+				stop = True
+			else:
+				previous = current
+				current = current.getNext()
+
+		temp = Node(data)
+
+		if previous == None:
+			temp.setNext(self.head)
+			self.head = temp
+		else:
+			temp.setNext(current)
+			previous.setNext(temp)
+
+	def size(self):
+		current = self.head
+		count = 0
+		while current != None:
+			current = current.getNext()
+			count = count + 1
+
+		return count
+
+	def remove(self, data):
+		current = self.head
+		previous = None
+		found = False
+		stop = False
+		while not found and not stop:
+			if current.getData() == data:
+				found = True
+			else:
+				if current.getData() > data:
+					stop = True
+				else:
+					previous = current
+					current = current.getNext()
+
+		if previous == None:
+			self.head = current.getNext()
+		else:
+			previous.setNext(current.getNext())
+
+	def search(self, data):
+		current = self.head
+		found = False
+		stop = False
+		index = 0
+
+		while current != None and not found and not stop:
+			if current.getData() == data:
+				found = True
+			else:
+				if current.getData() > data:
+					stop = True
+				else:
+					index = index + 1
+					#print(found)
+					current = current.getNext()
+
+		if found:
+			return index
+		else:
+			return -1
+
+
+	def __str__(self):
+		current = self.head
+		dataStr = '['
+		while current != None:
+			if current.getNext() != None:
+				dataStr += str(current.getData())+' '
+			else:
+				dataStr += str(current.getData())
+
+			current = current.getNext()
+
+		dataStr += ']'
+
+		return dataStr	
+		
+
 def main():
 	unOrdlist = UnorderdList()
 
@@ -110,6 +207,20 @@ def main():
 	print(unOrdlist.search(20))
 	print(unOrdlist.search(14))
 
+	orderedList = OrderedList()
+	orderedList.add(12)
+	orderedList.add(15)
+	orderedList.add(69)
+	orderedList.add(10)
+	orderedList.add(20)
+
+	print(orderedList)
+	print(orderedList.size())
+	orderedList.remove(15)
+	print(orderedList)
+	print(orderedList.size())
+	print(orderedList.search(20))
+	print(orderedList.search(14))
 
 
 main()
